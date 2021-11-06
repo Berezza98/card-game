@@ -3,11 +3,20 @@ const { priorities } = require('./consts');
 const TRUMP_COEF = 100; // коефіцієнт козиря
 
 class Card {
-  constructor(suit, value, trump) {
+  constructor(suit, value, deck) {
     this.suit = suit;
     this.value = value;
-    this.isTrump = trump === this.suit;
-    this.priority = this.isTrump ? TRUMP_COEF * priorities[this.value] : priorities[this.value];
+    this.deck = deck;
+  }
+
+  get isTrump() {
+    if (this.deck.trump) {
+      return this.deck.trump === this.suit;
+    }
+  }
+
+  get priority() {
+    return this.isTrump ? TRUMP_COEF * priorities[this.value] : priorities[this.value];
   }
 
   canBeat(anotherCard) {

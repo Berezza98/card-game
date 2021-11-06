@@ -32,6 +32,7 @@ const priorities = {
 };
 
 const MAX_CARD_COUNT_IN_ONE_HANDS = 6;
+const MAX_PLAYERS = 6;
 // Статуси гри
 const PENDING_STATUS = 'PENDING_STATUS';
 const STARTED_STATUS = 'STARTED_STATUS';
@@ -45,4 +46,5 @@ module.exports = {
   MAX_CARD_COUNT_IN_ONE_HANDS,
   PENDING_STATUS,
   STARTED_STATUS,
+  MAX_PLAYERS,
 }

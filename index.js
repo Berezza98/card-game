@@ -32,4 +32,8 @@ const game = new Game();
 game.addPlayer({ name: 'Roman', id: 1 });
 game.addPlayer({ name: 'Polina', id: 2 });
 game.start();
+const me = game.getPlayerById(1);
+const polina = game.getPlayerById(2);
+me.throwCardOnField(me.cards[0]);
+me.beatCard(game.gameField.gameStacks[0], polina.cards[0]);
 console.log(game);
