@@ -1,9 +1,15 @@
 const Player = require('./Player');
+const { ATTACK, DEFENSE } = require('./consts');
 
-class CircularList {
-  constructor(arr = []) {
-    this.arr = arr;
+class CircularList extends Array {
+  constructor(...elements) {
+    super(...elements);
     this._current = -1;
+  }
+
+  // for map, filter... methods which creates new arrays
+  static get [Symbol.species]() {
+    return this;
   }
 
   set current(value) {
@@ -11,7 +17,7 @@ class CircularList {
       return;
     }
 
-    this.arr.forEach((el, index) => {
+    this.forEach((el, index) => {
       if (el instanceof Player) {
         el.active = index === value;
       }
@@ -24,39 +30,19 @@ class CircularList {
     return this._current;
   }
 
-  get length() {
-    return this.arr.length;
-  }
-
-  forEach(cb) {
-    this.arr.forEach(cb);
-  }
-
-  find(cb) {
-    return this.arr.find(cb);
-  }
-
-  getByIndex(index) {
-    return this.arr[index];
-  }
-
-  push(el) {
-    this.arr.push(el);
-  }
-
   remove(indexCondition) {
-    const index = this.arr.findIndex(indexCondition);
+    const index = this.findIndex(indexCondition);
     if (index !== -1) {
-      this.arr.splice(index, 1);
+      this.splice(index, 1);
     }
   }
 
   next(cb) {
-    if (this.current >= this.arr.length - 1 || this.current < 0) {
+    if (this.current >= this.length - 1 || this.current < 0) {
       this.current = -1;
     }
 
-    const next = this.arr[++this.current];
+    const next = this[++this.current];
     if (typeof cb === 'function') {
       cb(next, this.current);
     }
@@ -65,11 +51,11 @@ class CircularList {
   }
 
   prev(cb) {
-    if (this.current <= 0 || this.current > this.arr.length - 1) {
-      this.current = this.arr.length;
+    if (this.current <= 0 || this.current > this.length - 1) {
+      this.current = this.length;
     }
 
-    const prev = this.arr[--this.current];
+    const prev = this[--this.current];
     if (typeof cb === 'function') {
       cb(prev, this.current);
     }

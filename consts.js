@@ -36,6 +36,9 @@ const MAX_PLAYERS = 6;
 // Статуси гри
 const PENDING_STATUS = 'PENDING_STATUS';
 const STARTED_STATUS = 'STARTED_STATUS';
+// Статуси гравця
+const ATTACK = 'ATTACK';
+const DEFENSE = 'DEFENSE';
 
 // TRUMP - КОЗИРЬ
 
@@ -47,4 +50,6 @@ module.exports = {
   PENDING_STATUS,
   STARTED_STATUS,
   MAX_PLAYERS,
+  ATTACK,
+  DEFENSE,
 }

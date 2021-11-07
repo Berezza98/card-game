@@ -37,10 +37,11 @@ class Deck { // DECK - КОЛОДА КАРТ
     }, trumpCards[0]);
     const minTrumpCardIndex = cardsForUsing.indexOf(minTrumpCard);
     // Set initial active player
-    players.current = minTrumpCardIndex % playersCount;
+    const activeUserIndex = minTrumpCardIndex % playersCount;
+    players.current = activeUserIndex;
 
     cardsForUsing.forEach((card, index) => {
-      players.getByIndex(index % playersCount).addCards(card);
+      players[index % playersCount].addCards(card);
     });
   }
 }

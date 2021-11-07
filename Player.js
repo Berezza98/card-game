@@ -1,4 +1,5 @@
 const Card = require('./Card');
+const { ATTACK, DEFENSE } = require('./consts');
 
 class Player {
   constructor({ name, id }, gameField) {
@@ -8,6 +9,7 @@ class Player {
     this.cards = [];
     this.isOnline = true;
     this.active = false;
+    this.status = ATTACK;
   }
 
   addCards(cards) {
@@ -20,7 +22,7 @@ class Player {
 
   throwCardOnField(card) {
     console.log('throwCardOnField: ', card);
-    if (!(card instanceof Card)) {
+    if (!(card instanceof Card) || this.status === DEFENSE) {
       return;
     }
 
@@ -32,6 +34,10 @@ class Player {
   }
 
   beatCard(stack, ownCard) {
+    if (this.status === ATTACK || !stack) {
+      return;
+    }
+    
     const cardToBeat = stack[0];
     if (ownCard.canBeat(cardToBeat)) {
       console.log('beatCard: ', ownCard);

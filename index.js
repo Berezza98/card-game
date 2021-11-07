@@ -35,5 +35,6 @@ game.start();
 const me = game.getPlayerById(1);
 const polina = game.getPlayerById(2);
 me.throwCardOnField(me.cards[0]);
+console.log(game);
 me.beatCard(game.gameField.gameStacks[0], polina.cards[0]);
 console.log(game);
