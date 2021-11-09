@@ -39,6 +39,13 @@ const STARTED_STATUS = 'STARTED_STATUS';
 // Статуси гравця
 const ATTACK = 'ATTACK';
 const DEFENSE = 'DEFENSE';
+// Статуси ходу
+const ACTIVE_MOVE = 'ACTIVE_MOVE';
+const FINISHED_MOVE = 'FINISHED_MOVE';
+
+//Cтатуси раунду
+const TAKE_ROUND = 'TAKE_ROUND';
+const BEAT_ROUND = 'BEAT_ROUND';
 
 // TRUMP - КОЗИРЬ
 
@@ -52,4 +59,8 @@ module.exports = {
   MAX_PLAYERS,
   ATTACK,
   DEFENSE,
+  ACTIVE_MOVE,
+  FINISHED_MOVE,
+  TAKE_ROUND,
+  BEAT_ROUND,
 }

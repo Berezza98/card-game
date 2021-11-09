@@ -1,20 +1,22 @@
-const Player = require('./Player');
 const Deck = require('./Deck');
 const GameField = require('./GameField');
-const CircularList = require('./CircularList');
-const { PENDING_STATUS, STARTED_STATUS, MAX_PLAYERS } = require('./consts');
+const PlayerList = require('./PlayerList');
+const {
+  PENDING_STATUS, STARTED_STATUS, MAX_PLAYERS,
+  TAKE_ROUND, BEAT_ROUND
+} = require('./consts');
 
 class Game {
   constructor() {
     this.gameField = new GameField();
-    this.players = new CircularList();
-    this.deck = new Deck();
+    this.players = new PlayerList(this);
+    this.deck = new Deck(this.players);
     this.status = PENDING_STATUS;
   }
 
   addPlayer(playerData) {
     if (this.status === PENDING_STATUS && this.players.length < MAX_PLAYERS) {
-      this.players.push(new Player(playerData, this.gameField));
+      this.players.append(playerData);
     }
   }
 
@@ -28,8 +30,15 @@ class Game {
 
   start() {
     this.deck.generate();
-    this.deck.cardsDistribution(this.players);
+    this.deck.cardsInitDistribution();
     this.status = STARTED_STATUS;
+  }
+
+  startNextRound(roundType) {
+    this.gameField.clear();
+    this.deck.cardsDistribution();
+    console.log('----------------------------------------');
+    this.players.makeActiveNext(roundType === TAKE_ROUND ? 2 : 1);
   }
 }
 

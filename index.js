@@ -1,6 +1,5 @@
 const Deck = require('./Deck');
 const Card = require('./Card');
-const CircularList = require('./CircularList');
 const Game = require('./Game');
 const { cardSuits, cardValues } = require('./consts');
 
@@ -31,10 +30,29 @@ const { cardSuits, cardValues } = require('./consts');
 const game = new Game();
 game.addPlayer({ name: 'Roman', id: 1 });
 game.addPlayer({ name: 'Polina', id: 2 });
+game.addPlayer({ name: 'Vadik', id: 3 });
 game.start();
+console.log('Trump: ', game.deck.trump);
 const me = game.getPlayerById(1);
 const polina = game.getPlayerById(2);
-me.throwCardOnField(me.cards[0]);
-console.log(game);
-me.beatCard(game.gameField.gameStacks[0], polina.cards[0]);
-console.log(game);
+const vadik = game.getPlayerById(3);
+
+for (let i = 0; i < 50; i++) {
+  const activePlayer = game.players.activePlayer;
+  const defencePlayer = game.players.defencePlayer;
+  const afterDefencePlayer = game.players.getNext(game.players.defencePlayer);
+  activePlayer.throwCardOnField(activePlayer.cards[0]);
+  const ok1 = defencePlayer.beatCard(game.gameField.gameStacks[0], defencePlayer.cards[0]);
+  if (ok1) {
+    activePlayer.finishMove();
+    afterDefencePlayer.finishMove();
+  } else {
+    console.log('Can not beat');
+    afterDefencePlayer.throwCardOnField(afterDefencePlayer.cards[0]);
+    defencePlayer.unableToBeatCards();
+    activePlayer.finishMove();
+    afterDefencePlayer.finishMove();
+  }
+}
+// БАЗОВА ЛОГІКА ГОТОВА, треба логіку обробки того, що у юзера закінчились карти(тобто, що він виграв)
+console.log();

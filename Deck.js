@@ -3,7 +3,8 @@ const { cardSuits, cardValues, MAX_CARD_COUNT_IN_ONE_HANDS } = require('./consts
 const { getRandomFromArray, shuffle } = require('./utils');
 
 class Deck { // DECK - КОЛОДА КАРТ
-  constructor() {
+  constructor(players) {
+    this.players = players;
     this.cards = [];
     this.trump = null;
   }
@@ -22,9 +23,9 @@ class Deck { // DECK - КОЛОДА КАРТ
     this.trump = this.cards[this.cards.length - 1].suit;
   };
 
-  cardsDistribution(players) { // players - CircularList
-    const playersCount = players.length;
-    console.log('playersCount: ', playersCount);
+  cardsInitDistribution() { // players - CircularList
+    console.log('Init Distribution cards');
+    const playersCount = this.players.length;
     const cardsForUsing = this.cards.splice(0, playersCount * MAX_CARD_COUNT_IN_ONE_HANDS);
     const trumpCards = cardsForUsing.filter(el => el.suit === this.trump);
 
@@ -38,10 +39,28 @@ class Deck { // DECK - КОЛОДА КАРТ
     const minTrumpCardIndex = cardsForUsing.indexOf(minTrumpCard);
     // Set initial active player
     const activeUserIndex = minTrumpCardIndex % playersCount;
-    players.current = activeUserIndex;
+    this.players.current = activeUserIndex;
 
     cardsForUsing.forEach((card, index) => {
-      players[index % playersCount].addCards(card);
+      this.players[index % playersCount].addCards(card);
+    });
+  }
+
+  cardsDistribution() {
+    console.log('Distribution cards');
+    if (this.cards.length === 0) {
+      return;
+    }
+
+    const needCardPlayers = this.players.filter(player => player.cards.length < MAX_CARD_COUNT_IN_ONE_HANDS);
+    needCardPlayers.forEach(player => {
+      if (this.cards.length === 0) {
+        return;
+      }
+
+      const countOfNeedCards = MAX_CARD_COUNT_IN_ONE_HANDS - player.cards.length;
+      const cardsForUser = this.cards.splice(0, countOfNeedCards); // HERE WE MODIFY this.cards
+      player.addCards(cardsForUser);
     });
   }
 }
