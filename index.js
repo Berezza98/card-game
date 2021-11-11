@@ -37,10 +37,17 @@ const me = game.getPlayerById(1);
 const polina = game.getPlayerById(2);
 const vadik = game.getPlayerById(3);
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 100; i++) {
+  if (game.players.playersInGame.length <= 1) {
+    break;
+  }
   const activePlayer = game.players.activePlayer;
   const defencePlayer = game.players.defencePlayer;
-  const afterDefencePlayer = game.players.getNext(game.players.defencePlayer);
+  const afterDefencePlayer = game.players.getNextInGame(game.players.defencePlayer);
+  console.log('DECK SIZE:', game.deck.cards.length);
+  console.log(`Active player: ${activePlayer.name}: `, activePlayer.cards.length);
+  console.log(`Defence player: ${defencePlayer.name}: `, defencePlayer.cards.length);
+  console.log(`After Defence player: ${afterDefencePlayer.name}: `, afterDefencePlayer.cards.length);
   activePlayer.throwCardOnField(activePlayer.cards[0]);
   const ok1 = defencePlayer.beatCard(game.gameField.gameStacks[0], defencePlayer.cards[0]);
   if (ok1) {
@@ -48,10 +55,15 @@ for (let i = 0; i < 50; i++) {
     afterDefencePlayer.finishMove();
   } else {
     console.log('Can not beat');
-    afterDefencePlayer.throwCardOnField(afterDefencePlayer.cards[0]);
     defencePlayer.unableToBeatCards();
     activePlayer.finishMove();
-    afterDefencePlayer.finishMove();
+    if (activePlayer !== afterDefencePlayer) {
+      const ok2 = afterDefencePlayer.throwCardOnField(afterDefencePlayer.cards[0]);
+      afterDefencePlayer.finishMove();
+      if (ok2) {
+        activePlayer.finishMove();
+      }
+    }
   }
 }
 // БАЗОВА ЛОГІКА ГОТОВА, треба логіку обробки того, що у юзера закінчились карти(тобто, що він виграв)

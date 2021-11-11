@@ -2,7 +2,8 @@ const EventEmitter = require('./EventEmitter');
 const Card = require('./Card');
 const {
   ATTACK, DEFENSE, ACTIVE_MOVE, FINISHED_MOVE,
-  TAKE_ROUND, BEAT_ROUND,
+  TAKE_ROUND, BEAT_ROUND, MAX_CARDS_FIRST_ROUND,
+  MAX_CARDS_PER_ROUND,
 } = require('./consts');
 const {THROW_CARD_ON_FIELD, FINISH_MOVE, CARD_BEATED } = require('./eventsName');
 
@@ -22,6 +23,7 @@ class Player extends EventEmitter {
     this.canThrowCard = false;
     this.status = ATTACK;
     this.moveStatus = ACTIVE_MOVE;
+    this.winner = false;
   }
 
   removeOwnCard(card) {
@@ -86,8 +88,14 @@ class Player extends EventEmitter {
   }
 
   throwCardOnField(card) {
-    console.log(`${this.name} throwCardOnField: `, card.suit, card.value);
-    if (!(card instanceof Card) || this.status === DEFENSE || !this.cards.includes(card) || !this.canThrowCard) {
+    console.log(`${this.name} throwCardOnField: `, card?.suit, card?.value);
+    if (
+      !(card instanceof Card) || this.status === DEFENSE ||
+      !this.cards.includes(card) || !this.canThrowCard ||
+      (this.game.firstRound && this.gameField.gameStacks.length >= MAX_CARDS_FIRST_ROUND) ||
+      (!this.game.firstRound && this.gameField.gameStacks.length >= MAX_CARDS_PER_ROUND) ||
+      this.playerList.defencePlayer.cards.length === this.gameField.notBeatedCards.length
+    ) {
       return;
     }
     // кидаємо будь-яку карту на поле, якщо воно пусте, або якщо значення карти вже є на полі

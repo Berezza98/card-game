@@ -49,10 +49,11 @@ class Deck { // DECK - КОЛОДА КАРТ
   cardsDistribution() {
     console.log('Distribution cards');
     if (this.cards.length === 0) {
+      this.players.checkWinners();
       return;
     }
 
-    const needCardPlayers = this.players.filter(player => player.cards.length < MAX_CARD_COUNT_IN_ONE_HANDS);
+    const needCardPlayers = this.players.playersInGame.filter(player => player.cards.length < MAX_CARD_COUNT_IN_ONE_HANDS);
     needCardPlayers.forEach(player => {
       if (this.cards.length === 0) {
         return;

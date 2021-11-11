@@ -1,10 +1,11 @@
-const { priorities } = require('./consts');
+const { priorities, suitSymbols } = require('./consts');
 
 const TRUMP_COEF = 100; // коефіцієнт козиря
 
 class Card {
   constructor(suit, value, deck) {
     this.suit = suit;
+    this.suitSymbol = suitSymbols[suit];
     this.value = value;
     this.deck = deck;
   }

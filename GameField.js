@@ -26,6 +26,10 @@ class GameField {
     return Object.keys(uniqueCards);
   }
 
+  get notBeatedCards() {
+    return this.gameStacks.filter(stack => stack.length === 1).map(stack => stack[0]);
+  }
+
   attack(card) {
     console.log('attack');
     const newStack = [card];

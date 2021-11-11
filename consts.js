@@ -33,6 +33,8 @@ const priorities = {
 
 const MAX_CARD_COUNT_IN_ONE_HANDS = 6;
 const MAX_PLAYERS = 6;
+const MAX_CARDS_FIRST_ROUND = 5;
+const MAX_CARDS_PER_ROUND = 5;
 // Статуси гри
 const PENDING_STATUS = 'PENDING_STATUS';
 const STARTED_STATUS = 'STARTED_STATUS';
@@ -46,6 +48,14 @@ const FINISHED_MOVE = 'FINISHED_MOVE';
 //Cтатуси раунду
 const TAKE_ROUND = 'TAKE_ROUND';
 const BEAT_ROUND = 'BEAT_ROUND';
+
+//Символи мастей
+const suitSymbols = {
+  [SPADES]: '♠',
+  [HEARTS]: '♥',
+  [DIAMONDS]: '♦',
+  [CLUBS]: '♣'
+}
 
 // TRUMP - КОЗИРЬ
 
@@ -63,4 +73,7 @@ module.exports = {
   FINISHED_MOVE,
   TAKE_ROUND,
   BEAT_ROUND,
+  MAX_CARDS_PER_ROUND,
+  MAX_CARDS_FIRST_ROUND,
+  suitSymbols,
 }

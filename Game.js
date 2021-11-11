@@ -12,6 +12,7 @@ class Game {
     this.players = new PlayerList(this);
     this.deck = new Deck(this.players);
     this.status = PENDING_STATUS;
+    this.firstRound = true;
   }
 
   addPlayer(playerData) {
@@ -37,6 +38,7 @@ class Game {
   startNextRound(roundType) {
     this.gameField.clear();
     this.deck.cardsDistribution();
+    this.firstRound = false;
     console.log('----------------------------------------');
     this.players.makeActiveNext(roundType === TAKE_ROUND ? 2 : 1);
   }

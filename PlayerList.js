@@ -8,8 +8,16 @@ const { THROW_CARD_ON_FIELD, FINISH_MOVE, CARD_BEATED } = require('./eventsName'
 class PlayerList extends Array {
   constructor(game) {
     super();
-    this.game = game;
-    this._current = -1;
+    Object.defineProperty(this, 'game', {
+      enumerable: false,
+      value: game
+    });
+    Object.defineProperty(this, '_current', {
+      enumerable: false,
+      writable: true,
+      configurable: true,
+      value: -1
+    });
   }
 
   // for map, filter... methods which creates new arrays
@@ -30,7 +38,7 @@ class PlayerList extends Array {
     });
     
     // Наступний гравець після активного буде відбиватись
-    this.getNext(this.activePlayer).status = DEFENSE;
+    this.getNextInGame(this.activePlayer).status = DEFENSE;
 
     this._current = value;
   }
@@ -47,8 +55,12 @@ class PlayerList extends Array {
     return this.find(player => player.status === DEFENSE);
   }
 
+  get playersInGame() {
+    return this.filter(player => player.isOnline && !player.winner);
+  }
+
   get allAttackPlayersFinishedMove() {
-    const allAttackedPlayers = this.filter(p => p.status === ATTACK);
+    const allAttackedPlayers = this.playersInGame.filter(p => p.status === ATTACK);
     const allPlayersFinishedMove = allAttackedPlayers.every(p => p.moveStatus === FINISHED_MOVE);
     return allPlayersFinishedMove;
   }
@@ -90,7 +102,7 @@ class PlayerList extends Array {
     }
   }
 
-  getNext(currentElement) {
+  getNextInGame(currentElement) {
     const currentIndex = this.indexOf(currentElement);
 
     if (currentElement < 0) {
@@ -98,10 +110,15 @@ class PlayerList extends Array {
     }
 
     const nextIndex = currentIndex === this.length - 1 ? 0 : currentIndex + 1;
+    if (!this.playersInGame.includes(this[nextIndex])) {
+      return this.getNextInGame(this[nextIndex]);
+    }
+
     return this[nextIndex];
   }
 
-  getPrev(currentElement) {
+  getPrevInGame(currentElement) {
+    // NEED TO IMPLEMENT
     const currentIndex = this.indexOf(currentElement);
 
     if (currentElement < 0) {
@@ -113,9 +130,10 @@ class PlayerList extends Array {
   }
 
   makeActiveNext(count) {
-    this.current = this.current + count <= this.length - 1 ?
-      this.current + count :
-      (this.current + count) % this.length;
+    const result = new Array(count).fill(null).reduce((acc) => {
+      return this.getNextInGame(acc);
+    }, this.activePlayer);
+    this.current = this.indexOf(result);
   }
 
   makeActivePrev(count) {
@@ -125,6 +143,15 @@ class PlayerList extends Array {
     }
 
     this.current -= 1;
+  }
+
+  checkWinners() {
+    this.forEach(player => {
+      if (player.cards.length === 0) {
+        player.winner = true;
+      }
+    });
+    console.log('checkWinners: ', this.filter(player => player.winner).map(player => player.name));
   }
 }
 
