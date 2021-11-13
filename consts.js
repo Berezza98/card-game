@@ -1,10 +1,10 @@
 // МАСТІ КАРТ
-const SPADES = 'SPADES'; // ПІКА
 const HEARTS = 'HEARTS'; // ЧІРВА
+const SPADES = 'SPADES'; // ПІКА
 const DIAMONDS = 'DIAMONDS'; // БУБНА
 const CLUBS = 'CLUBS'; // ХРЕСТА
 
-const cardSuits = [SPADES, HEARTS, DIAMONDS, CLUBS];
+const cardSuits = [HEARTS, SPADES, DIAMONDS, CLUBS];
 
 // ЗНАЧЕННЯ КАРТ
 const SIX = '6';
@@ -17,7 +17,7 @@ const QEEN = 'QEEN'; // ДАМА
 const KING = 'KING'; // КОРОЛЬ
 const ACE = 'ACE'; // ТУЗ
 
-const cardValues = [SIX, SEVEN, EIGHT, NINE, TEN, JACK, QEEN, KING, ACE];
+const cardValues = [ACE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QEEN, KING];
 
 const priorities = {
   [SIX]: 6,
@@ -76,4 +76,17 @@ module.exports = {
   MAX_CARDS_PER_ROUND,
   MAX_CARDS_FIRST_ROUND,
   suitSymbols,
+  SPADES,
+  HEARTS,
+  DIAMONDS,
+  CLUBS,
+  SIX,
+  SEVEN,
+  EIGHT,
+  NINE,
+  TEN,
+  JACK,
+  QEEN,
+  KING,
+  ACE,
 }

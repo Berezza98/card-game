@@ -37,7 +37,7 @@ class GameField {
   }
 
   beat(stack, card) {
-    console.log('beat');
+    console.log('beat: ');
     stack[1] = card;
   }
 

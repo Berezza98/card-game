@@ -6,6 +6,7 @@ class Deck { // DECK - КОЛОДА КАРТ
   constructor(players) {
     this.players = players;
     this.cards = [];
+    this.trumpCard = null;
     this.trump = null;
   }
 
@@ -20,7 +21,8 @@ class Deck { // DECK - КОЛОДА КАРТ
 
     shuffle(tmpDeck);
     this.cards = tmpDeck;
-    this.trump = this.cards[this.cards.length - 1].suit;
+    this.trumpCard = this.cards[this.cards.length - 1];
+    this.trump = this.trumpCard.suit;
   };
 
   cardsInitDistribution() { // players - CircularList
